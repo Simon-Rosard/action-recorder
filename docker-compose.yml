@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  action-recorder:
+    build: .
+    ports:
+      - "19000:19000"
+    volumes:
+      - ./recordings:/app/recordings
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PORT=19000
+    networks:
+      - action-recorder-network
+    restart: unless-stopped
+    privileged: true  # Nécessaire pour l'accès aux périphériques d'entrée
+
+networks:
+  action-recorder-network:
+    driver: bridge
+
+volumes:
+  recordings:
